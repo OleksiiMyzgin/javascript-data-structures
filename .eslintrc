@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "extends": "airbnb",
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
+  },
+  "rules": {
+    "max-classes-per-file": "off",
+    "no-tabs": ["error", { "allowIndentationTabs": true }],
+    "indent": ["off", "tab"],
+    "arrow-parens": ["error", "as-needed"],
+    "quotes": ["error", "double"],
+    "comma-dangle": ["error", "never"]
+  }
+}
