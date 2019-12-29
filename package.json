@@ -1,7 +1,7 @@
 {
-  "name": "linked-list",
-  "version": "1.0.0",
-  "description": "",
+  "name": "javascript-data-structures",
+  "version": "0.0.1",
+  "description": "Data-structures implemented in JavaScript",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src/*",
@@ -9,8 +9,12 @@
     "test": "jest",
     "ci": "npm run lint && npm run tslint && npm run test -- --coverage"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OleksiiMyzgin/javascript-data-structures.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Oleksii Myzgin",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.7.7",
