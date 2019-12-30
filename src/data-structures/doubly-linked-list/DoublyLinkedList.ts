@@ -1,12 +1,12 @@
 class DoublyLinkedListNode {
   constructor(
-    public value: number | string,
+    public value: number | string | {},
     public next: DoublyLinkedListNode | null = null,
     public previous: DoublyLinkedListNode | null = null,
     ) {}
 
-  public toString(): string  {
-    return `${this.value}`;
+  public toString(callback?: (v: number | string | {}) => string): string {
+    return callback ? callback(this.value) : `${this.value}`;
   }
 }
 
@@ -15,7 +15,7 @@ class DoublyLinkedList {
   private tail: DoublyLinkedListNode | null = null;
 
 	// добавляем узел в начало списка
-  public prepend(value: number | string): DoublyLinkedList {
+  public prepend(value: number | string | {}): DoublyLinkedList {
 		// Создаем новый узел, который будет head
 		const newNode = new DoublyLinkedListNode(value, this.head);
 
@@ -36,7 +36,7 @@ class DoublyLinkedList {
 	}
 
 	// добавляем узел в конец списка
-	public append(value: number | string): DoublyLinkedList {
+	public append(value: number | string | {}): DoublyLinkedList {
     const newNode = new DoublyLinkedListNode(value);
 
     if (this.tail) {
@@ -57,7 +57,7 @@ class DoublyLinkedList {
     return this;
 	}
 
-	public delete(value: number | string): DoublyLinkedListNode | null {
+	public delete(value: number | string | {}): DoublyLinkedListNode | null {
     if (!this.head) {
       return null;
     }
@@ -110,7 +110,7 @@ class DoublyLinkedList {
     return deletedNode;
   }
 
-  public find(value?: number | string | undefined): DoublyLinkedListNode | null {
+  public find(value?: number | string | {} | undefined): DoublyLinkedListNode | null {
     if (!this.head) {
       return null;
     }
@@ -165,8 +165,8 @@ class DoublyLinkedList {
     return deletedHead;
   }
 
-  public fromArray(values: number[] | string[]): DoublyLinkedList {
-    values.forEach((value: number | string) => this.append(value));
+  public fromArray(values: Array<number | string | {}>): DoublyLinkedList {
+    values.forEach((value: number | string | {}) => this.append(value));
 
     return this;
   }
@@ -183,9 +183,11 @@ class DoublyLinkedList {
     return nodes;
   }
 
-  public toString(): string {
-    return this.toArray().toString();
-  }
+  public toString(callback?: (v: number | string | {} ) => string): string {
+		return this.toArray()
+			.map(node => node.toString(callback))
+			.toString();
+	}
 
   public reverse(): DoublyLinkedList {
     let currNode = this.head;
@@ -213,5 +215,3 @@ class DoublyLinkedList {
     return this;
   }
 }
-
-const linkedList = new DoublyLinkedList();

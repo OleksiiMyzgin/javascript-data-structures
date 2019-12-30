@@ -215,4 +215,18 @@ describe("DoublyLinkedList", () => {
 		expect(linkedList.tail.previous.previous.value).toBe(2);
 		expect(linkedList.tail.previous.previous.previous.value).toBe(1);
 	});
+
+	it("store objects in the list and print them out", () => {
+		const linkedList = new DoublyLinkedList();
+
+		const nodeValue1 = { value: 1, key: "key1" };
+		const nodeValue2 = { value: 2, key: "key2" };
+
+		linkedList.append(nodeValue1);
+		linkedList.prepend(nodeValue2);
+
+		const nodeStringifier = value => `${value.key}:${value.value}`;
+
+		expect(linkedList.toString(nodeStringifier)).toBe("key2:2,key1:1");
+	});
 });

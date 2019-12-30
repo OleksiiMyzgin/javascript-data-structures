@@ -5,8 +5,8 @@ class DoublyLinkedListNode {
 		this.previous = previous;
 	}
 
-	toString() {
-		return `${this.value}`;
+	toString(callback) {
+		return callback ? callback(this.value) : `${this.value}`;
 	}
 }
 
@@ -183,8 +183,10 @@ export default class DoublyLinkedList {
 		return nodes;
 	}
 
-	toString() {
-		return this.toArray().toString();
+	toString(callback) {
+		return this.toArray()
+			.map(node => node.toString(callback))
+			.toString();
 	}
 
 	reverse() {
