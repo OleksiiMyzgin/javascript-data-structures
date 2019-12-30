@@ -4,8 +4,8 @@ class LinkedListNode {
 		this.next = next;
 	}
 
-	toString() {
-		return `${this.value}`;
+	toString(callback) {
+		return callback ? callback(this.value) : `${this.value}`;
 	}
 }
 
@@ -172,8 +172,10 @@ export default class LinkedList {
 	}
 
 	// Создаем строку из всех значение узлов
-	toString() {
-		return this.toArray().toString();
+	toString(callback) {
+		return this.toArray()
+			.map(node => node.toString(callback))
+			.toString();
 	}
 
 	// Обратный список

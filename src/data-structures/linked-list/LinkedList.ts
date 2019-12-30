@@ -1,11 +1,11 @@
 class LinkedListNode {
 	constructor(
-		public value: number | string,
+		public value: number | string | {},
 		public next: LinkedListNode | null = null,
 		) {}
 
-	public toString(): string {
-		return `${this.value}`;
+	public toString(callback?: (v: number | string | {}) => string): string {
+		return callback ? callback(this.value) : `${this.value}`;
 	}
 }
 
@@ -14,7 +14,7 @@ export default class LinkedList {
 	private tail: LinkedListNode | null = null;
 
 	// добавляем узел  в начало списка
-	public prepend(value: number | string): LinkedList {
+	public prepend(value: number | string | {}): LinkedList {
 		// Создаем новый узел, который будет head
 		const newNode = new LinkedListNode(value, this.head);
 		this.head = newNode;
@@ -28,7 +28,7 @@ export default class LinkedList {
 	}
 
 	// добавляем узел в конец списка
-	public append(value: number | string): LinkedList {
+	public append(value: number | string | {}): LinkedList {
 		// Создаем новый узел
 		const newNode = new LinkedListNode(value);
 
@@ -48,7 +48,7 @@ export default class LinkedList {
 		return this;
 	}
 
-	public delete(value: number | string): LinkedListNode | null {
+	public delete(value: number | string | {}): LinkedListNode | null {
 		if (!this.head) {
 			return null;
 		}
@@ -87,7 +87,7 @@ export default class LinkedList {
 		return deletedNode;
 	}
 
-	public find(value?: number | string | undefined): LinkedListNode | null {
+	public find(value?: number | string | {} | undefined): LinkedListNode | null {
 		if (!this.head) {
 			return null;
 		}
@@ -152,8 +152,8 @@ export default class LinkedList {
 	}
 
 	// Создаем новые узлы из массива и добавляем в конец списка
-	public fromArray(values: number[] | string[]): LinkedList {
-		values.forEach((value: number | string) => this.append(value));
+	public fromArray(values: Array<number | string | {}>): LinkedList {
+		values.forEach((value: number | string | {}) => this.append(value));
 
 		return this;
 	}
@@ -172,8 +172,10 @@ export default class LinkedList {
 	}
 
 	// Создаем строку из всех значение узлов
-	public toString(): string {
-		return this.toArray().toString();
+	public toString(callback?: (v: number | string | {} ) => string): string {
+		return this.toArray()
+			.map(node => node.toString(callback))
+			.toString();
 	}
 
 	// Обратный список

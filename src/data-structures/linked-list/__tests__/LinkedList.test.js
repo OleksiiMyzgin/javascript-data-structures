@@ -186,4 +186,18 @@ describe("LinkedList", () => {
 		expect(linkedList.head.value).toBe(1);
 		expect(linkedList.tail.value).toBe(3);
 	});
+
+	it("store objects in the list and print them out", () => {
+		const linkedList = new LinkedList();
+
+		const nodeValue1 = { value: 1, key: "key1" };
+		const nodeValue2 = { value: 2, key: "key2" };
+
+		linkedList.append(nodeValue1);
+		linkedList.prepend(nodeValue2);
+
+		const nodeStringifier = value => `${value.key}:${value.value}`;
+
+		expect(linkedList.toString(nodeStringifier)).toBe("key2:2,key1:1");
+	});
 });
