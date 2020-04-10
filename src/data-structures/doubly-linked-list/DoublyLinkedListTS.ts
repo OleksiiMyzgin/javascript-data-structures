@@ -1,42 +1,58 @@
-class DoublyLinkedListNode {
+export interface INode {
+  value: number | string | { [ket: string]: any };
+  next: DoublyLinkedListNode | null;
+  previous: DoublyLinkedListNode | null;
+  toString(fn?: Fn): string;
+}
+
+export type Fn = (value: { [ket: string]: any }) => string;
+
+export class DoublyLinkedListNode implements INode {
   constructor(
-    public value: number | string | {},
+    public value: number | string | { [ket: string]: any },
     public next: DoublyLinkedListNode | null = null,
     public previous: DoublyLinkedListNode | null = null,
-    ) {}
+  ) {}
 
-  public toString(callback?: (v: number | string | {}) => string): string {
-    return callback ? callback(this.value) : `${this.value}`;
+  public toString(callback?: Fn): string {
+    return callback
+      ? callback(this.value as { [ket: string]: any })
+      : `${this.value}`;
   }
 }
 
-class DoublyLinkedList {
-  private head: DoublyLinkedListNode | null = null;
-  private tail: DoublyLinkedListNode | null = null;
+export interface INodeList {
+  head: DoublyLinkedListNode | null;
+  tail: DoublyLinkedListNode | null;
+}
 
-	// добавляем узел в начало списка
+export class DoublyLinkedList implements INodeList {
+  public head: DoublyLinkedListNode | null = null;
+  public tail: DoublyLinkedListNode | null = null;
+
+  // добавляем узел в начало списка
   public prepend(value: number | string | {}): DoublyLinkedList {
-		// Создаем новый узел, который будет head
-		const newNode = new DoublyLinkedListNode(value, this.head);
+    // Создаем новый узел, который будет head
+    const newNode = new DoublyLinkedListNode(value, this.head);
 
-		// Если есть head, то он больше не будет head.
-		// Поэтому делаем его предыдущую (previous) ссылку на новый узел (new head)
-		// Затем делаем новый узел head.
-		if (this.head) {
-			this.head.previous = newNode;
-		}
-		this.head = newNode;
+    // Если есть head, то он больше не будет head.
+    // Поэтому делаем его предыдущую (previous) ссылку на новый узел (new head)
+    // Затем делаем новый узел head.
+    if (this.head) {
+      this.head.previous = newNode;
+    }
+    this.head = newNode;
 
-		// Если еще нет tail, сделаем новый узел tail.
-		if (!this.tail) {
-			this.tail = newNode;
-		}
+    // Если еще нет tail, сделаем новый узел tail.
+    if (!this.tail) {
+      this.tail = newNode;
+    }
 
-		return this;
-	}
+    return this;
+  }
 
-	// добавляем узел в конец списка
-	public append(value: number | string | {}): DoublyLinkedList {
+  // добавляем узел в конец списка
+  public append(value: number | string | {}): DoublyLinkedList {
     const newNode = new DoublyLinkedListNode(value);
 
     if (this.tail) {
@@ -55,9 +71,9 @@ class DoublyLinkedList {
     }
 
     return this;
-	}
+  }
 
-	public delete(value: number | string | {}): DoublyLinkedListNode | null {
+  public delete(value: number | string | {}): DoublyLinkedListNode | null {
     if (!this.head) {
       return null;
     }
@@ -70,12 +86,12 @@ class DoublyLinkedList {
         deletedNode = currentNode;
 
         if (deletedNode === this.head) {
-					// Если head должен быть удален..
+          // Если head должен быть удален..
 
           // Сделать следующий узел, новым head
           this.head = deletedNode.next;
 
-					// Установить в новом head сслыку (previous) на ноль.
+          // Установить в новом head сслыку (previous) на ноль.
           if (this.head) {
             this.head.previous = null;
           }
@@ -87,30 +103,31 @@ class DoublyLinkedList {
           if (deletedNode === this.tail) {
             this.tail = null;
           }
-				} else if (deletedNode === this.tail) {
-					// Если tail должен быть удален
+        } else if (deletedNode === this.tail) {
+          // Если tail должен быть удален
 
-					// Установить tail на предпоследний узел, который станет новым tail.
+          // Установить tail на предпоследний узел, который станет новым tail.
           this.tail = deletedNode.previous as DoublyLinkedListNode;
           this.tail.next = null;
+        } else {
+          // Если средний узел будет удален ...
+          const previousNode = deletedNode.previous as DoublyLinkedListNode;
+          const nextNode = deletedNode.next as DoublyLinkedListNode;
 
-				} else {
-					// Если средний узел будет удален ...
-					const previousNode = deletedNode.previous as DoublyLinkedListNode;
-					const nextNode = deletedNode.next as DoublyLinkedListNode;
-
-					previousNode.next = nextNode;
-					nextNode.previous = previousNode;
-				}
-			}
+          previousNode.next = nextNode;
+          nextNode.previous = previousNode;
+        }
+      }
 
       currentNode = currentNode.next;
-		}
+    }
 
     return deletedNode;
   }
 
-  public find(value?: number | string | {} | undefined): DoublyLinkedListNode | null {
+  public find(
+    value?: number | string | {} | undefined,
+  ): DoublyLinkedListNode | null {
     if (!this.head) {
       return null;
     }
@@ -183,11 +200,11 @@ class DoublyLinkedList {
     return nodes;
   }
 
-  public toString(callback?: (v: number | string | {} ) => string): string {
-		return this.toArray()
-			.map(node => node.toString(callback))
-			.toString();
-	}
+  public toString(callback?: Fn): string {
+    return this.toArray()
+      .map((node) => node.toString(callback))
+      .toString();
+  }
 
   public reverse(): DoublyLinkedList {
     let currNode = this.head;
