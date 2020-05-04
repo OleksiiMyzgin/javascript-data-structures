@@ -42,23 +42,21 @@ export class DoublyLinkedList implements INodeList {
   public head: DoublyLinkedListNode | null = null;
   public tail: DoublyLinkedListNode | null = null;
 
-  /** Добавляем узел в начало списка. */
+  // Добавляем узел в начало списка.
   prepend(value: Value): DoublyLinkedList {
-    /** Создаем новый узел, который будет head. */
+    // Создаем новый узел, который будет head.
     const newNode = new DoublyLinkedListNode(value, this.head);
 
-    /**
-     * Если есть head, то он больше не будет head.
-     * Поэтому делаем его предыдущую (previous) ссылку на новый узел (new head).
-     * Затем делаем новый узел head.
-     */
+    // Если есть head, то он больше не будет head.
+    // Поэтому делаем его предыдущую (previous) ссылку на новый узел (new head).
+    // Затем делаем новый узел head.
 
     if (this.head) {
       this.head.previous = newNode;
     }
     this.head = newNode;
 
-    /** Если еще нет tail, сделаем новый узел tail. */
+    // Если еще нет tail, сделаем новый узел tail.
     if (!this.tail) {
       this.tail = newNode;
     }
@@ -66,19 +64,19 @@ export class DoublyLinkedList implements INodeList {
     return this;
   }
 
-  /** Добавляем узел в конец списка. */
+  // Добавляем узел в конец списка.
   append(value: Value): DoublyLinkedList {
     const newNode = new DoublyLinkedListNode(value);
 
     if (this.tail) {
-      /** Присоединяем новый узел к концу связанного списка. */
+      // Присоединяем новый узел к концу связанного списка.
       this.tail.next = newNode;
     }
 
-    /** Присоединяем текущий tail к предыдущей (previous) ссылке нового узла. */
+    // Присоединяем текущий tail к предыдущей (previous) ссылке нового узла.
     newNode.previous = this.tail;
 
-    /** Переназначаем tail на новый узел. */
+    // Переназначаем tail на новый узел.
     this.tail = newNode;
 
     if (!this.head) {
@@ -101,37 +99,32 @@ export class DoublyLinkedList implements INodeList {
         deletedNode = currentNode;
 
         if (deletedNode === this.head) {
-          /**
-           * Если head должен быть удален..
-           *
-           * Сделать следующий узел, новым head
-           */
+          // Если head должен быть удален..
+
+          // Сделать следующий узел, новым head
+
           this.head = deletedNode.next;
 
-          /** Установить в новом head сслыку (previous) на ноль. */
+          // Установить в новом head сслыку (previous) на ноль.
           if (this.head) {
             this.head.previous = null;
           }
 
-          /**
-           * Если все узлы в списке имеют одинаковое значение,
-           * которое передается в качестве аргумента,
-           * тогда все узлы будут удалены, поэтому tail необходимо обновить.
-           */
+          // Если все узлы в списке имеют одинаковое значение,
+          // которое передается в качестве аргумента,
+          // тогда все узлы будут удалены, поэтому tail необходимо обновить.
 
           if (deletedNode === this.tail) {
             this.tail = null;
           }
         } else if (deletedNode === this.tail) {
-          /**
-           * Если tail должен быть удален.abs
-           * Установить tail на предпоследний узел, который станет новым tail.
-           */
+          // Если tail должен быть удален.abs
+          // Установить tail на предпоследний узел, который станет новым tail.
 
           this.tail = deletedNode.previous as DoublyLinkedListNode;
           this.tail.next = null;
         } else {
-          /** Если средний узел будет удален ... */
+          // Если средний узел будет удален ...
           const previousNode = deletedNode.previous as DoublyLinkedListNode;
           const nextNode = deletedNode.next as DoublyLinkedListNode;
 
@@ -154,7 +147,7 @@ export class DoublyLinkedList implements INodeList {
     let currentNode: DoublyLinkedListNode | null = this.head;
 
     while (currentNode) {
-      /** Если указано значение, пробуем сравнить по значению. */
+      // Если указано значение, пробуем сравнить по значению.
       if (value !== undefined && currentNode.value === value) {
         return currentNode;
       }
@@ -231,20 +224,20 @@ export class DoublyLinkedList implements INodeList {
     let nextNode = null;
 
     while (currNode) {
-      /** Сохраняем следующий и предыдуший узел. */
+      // Сохраняем следующий и предыдуший узел.
       nextNode = currNode.next;
       prevNode = currNode.previous;
 
-      /** Меняем следующий узел текущего узла, чтобы он ссылался с предыдущий узел. */
+      // Меняем следующий узел текущего узла, чтобы он ссылался с предыдущий узел.
       currNode.next = prevNode;
       currNode.previous = nextNode;
 
-      /** Перемещаем узлы prevNode и currNode на один шаг вперед. */
+      // Перемещаем узлы prevNode и currNode на один шаг вперед.
       prevNode = currNode;
       currNode = nextNode;
     }
 
-    /** Сбрасываем head и tail. */
+    // Сбрасываем head и tail.
     this.tail = this.head;
     this.head = prevNode;
 
